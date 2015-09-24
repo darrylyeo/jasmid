@@ -15,6 +15,8 @@ function MidiFile(data) {
 	
 	var lastEventTypeByte;
 	
+	var pitchLabels = "C C# D D# E F F# G G# A A# B".split(" ");
+	
 	function readEvent(stream) {
 		var event = {};
 		event.deltaTime = stream.readVarInt();
@@ -149,14 +151,12 @@ function MidiFile(data) {
 			event.type = 'channel';
 			switch (eventType) {
 				case 0x08:
+				case 0x09:
 					event.subtype = 'noteOff';
 					event.noteNumber = param1;
+					event.pitchName = pitchLabels[noteNumber % 12] + Math.floor((noteNumber / 12) - 1);
 					event.velocity = stream.readInt8();
-					return event;
-				case 0x09:
-					event.noteNumber = param1;
-					event.velocity = stream.readInt8();
-					if (event.velocity == 0) {
+					if (eventType === 0x08 || event.velocity == 0) {
 						event.subtype = 'noteOff';
 					} else {
 						event.subtype = 'noteOn';
