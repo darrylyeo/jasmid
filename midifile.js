@@ -153,7 +153,7 @@ function MidiFile(data) {
 				case 0x08:
 				case 0x09:
 					event.noteNumber = param1;
-					event.pitchName = pitchLabels[noteNumber % 12] + Math.floor((event.noteNumber / 12) - 1);
+					event.pitchName = pitchLabels[event.noteNumber % 12] + Math.floor((event.noteNumber / 12) - 1);
 					event.velocity = stream.readInt8();
 					if (eventType === 0x08 || event.velocity == 0) {
 						event.subtype = 'noteOff';
