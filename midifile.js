@@ -15,9 +15,15 @@ function MidiFile(data) {
 	
 	var lastEventTypeByte;
 	
+	var currentPlayTime = 0;
+	
 	function readEvent(stream) {
 		var event = {};
+		
 		event.deltaTime = stream.readVarInt();
+		event.playTime = currentPlayTime;
+		currentPlayTime += event.deltaTime || 0;
+		
 		var eventTypeByte = stream.readInt8();
 		if ((eventTypeByte & 0xf0) == 0xf0) {
 			/* system / meta event */
