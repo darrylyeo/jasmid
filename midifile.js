@@ -152,7 +152,6 @@ function MidiFile(data) {
 			switch (eventType) {
 				case 0x08:
 				case 0x09:
-					event.subtype = 'noteOff';
 					event.noteNumber = param1;
 					event.pitchName = pitchLabels[noteNumber % 12] + Math.floor((noteNumber / 12) - 1);
 					event.velocity = stream.readInt8();
