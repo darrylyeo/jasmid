@@ -217,6 +217,7 @@ function MidiFile(data) {
 		'ticksPerBeat': ticksPerBeat
 	}
 	var tracks = [];
+	var totalPlayTime = 0;
 	for (var i = 0; i < header.trackCount; i++) {
 		tracks[i] = [];
 		var trackChunk = readChunk(stream);
@@ -232,10 +233,13 @@ function MidiFile(data) {
 			tracks[i].push(event);
 			//console.log(event);
 		}
+		
+		totalPlayTime = Math.max(totalPlayTime, currentPlayTime);
 	}
 	
 	return {
 		'header': header,
-		'tracks': tracks
+		'tracks': tracks,
+		'totalPlayTime': totalPlayTime
 	}
 }
